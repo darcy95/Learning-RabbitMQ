@@ -11,12 +11,12 @@ install:
 	rm -rf ${RMQ_JAVA_BIN}.tar.gz
 
 hello-send: Send.class
-	@java -cp ${JAVA_CP} Send
-	@java -cp ${JAVA_CP} Send
-	@java -cp ${JAVA_CP} Send
-	@java -cp ${JAVA_CP} Send
-	@java -cp ${JAVA_CP} Send
-	@java -cp ${JAVA_CP} Send
+	@java -cp ${JAVA_CP} Send Hello.
+	@java -cp ${JAVA_CP} Send World..
+	@java -cp ${JAVA_CP} Send Hi...
+	@java -cp ${JAVA_CP} Send Welcome....
+	@java -cp ${JAVA_CP} Send to.....
+	@java -cp ${JAVA_CP} Send Matrix......
 
 Send.class:
 	javac -cp ./classes/rabbitmq-client.jar Send.java

@@ -1,7 +1,5 @@
 import java.io.*;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.*;
 
 public class Send {
     private final static String QUEUE_NAME = "hello";
@@ -47,7 +45,7 @@ public class Send {
                             false, 
                             null);
 
-        String message = "Hello World!";
+        String message = argv[0];
 
         channel.basicPublish("", 
                             QUEUE_NAME, // The name of the queue

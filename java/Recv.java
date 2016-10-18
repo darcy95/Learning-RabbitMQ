@@ -3,7 +3,6 @@ import com.rabbitmq.client.*;
 import java.io.IOException;
 
 public class Recv {
-
     private final static String QUEUE_NAME = "hello";
 
     public static void main(String[] argv) throws Exception {
@@ -42,7 +41,11 @@ public class Recv {
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 
-        channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+        channel.queueDeclare(QUEUE_NAME, 
+                            true, // Message durability
+                            false, 
+                            false, 
+                            null);
         System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 
         channel.basicQos(1); // This tells RabbitMQ not to give more than one message to a consumer at a time.
@@ -54,7 +57,7 @@ public class Recv {
                 System.out.println(" [x] Received '" + message + "'");
 
                 try {
-                    do_work(message);
+                    doWork(message);
                 } finally {
                     System.out.println(" [x] The work is done!");
                     channel.basicAck(envelope.getDeliveryTag(), false);
