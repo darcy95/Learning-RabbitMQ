@@ -10,26 +10,22 @@ install:
 	mv rabbitmq-java-client-bin-${RMQ_VERSION} classes
 	rm -rf ${RMQ_JAVA_BIN}.tar.gz
 
-hello:
-	javac -cp ./classes/rabbitmq-client.jar Send.java Recv.java
+hello-send: Send.class
 	@java -cp ${JAVA_CP} Send
 	@java -cp ${JAVA_CP} Send
 	@java -cp ${JAVA_CP} Send
 	@java -cp ${JAVA_CP} Send
 	@java -cp ${JAVA_CP} Send
 	@java -cp ${JAVA_CP} Send
-	@java -cp ${JAVA_CP} Send
-	@java -cp ${JAVA_CP} Send
-	@java -cp ${JAVA_CP} Send
-	@java -cp ${JAVA_CP} Send
-	@java -cp ${JAVA_CP} Send
-	@java -cp ${JAVA_CP} Send
-	@java -cp ${JAVA_CP} Send
-	@java -cp ${JAVA_CP} Send
-	@java -cp ${JAVA_CP} Send
-	@java -cp ${JAVA_CP} Send
-	@java -cp ${JAVA_CP} Send
+
+Send.class:
+	javac -cp ./classes/rabbitmq-client.jar Send.java
+
+hello-recv: Recv.class
 	@java -cp ${JAVA_CP} Recv
+
+Recv.class:
+	javac -cp ./classes/rabbitmq-client.jar Recv.java
 
 clean:
 	rm -rf *.class

@@ -1,5 +1,5 @@
+import java.io.*;
 import com.rabbitmq.client.*;
-
 import java.io.IOException;
 
 public class Recv {
@@ -7,11 +7,37 @@ public class Recv {
     private final static String QUEUE_NAME = "hello";
 
     public static void main(String[] argv) throws Exception {
+        BufferedReader br = new BufferedReader(new FileReader("../conn.db"));
+
+        String host = "";
+        String user = "";
+        String pass = "";
+        String virt = "";
+    
+        try {
+            String line = "";
+
+            while ((line = br.readLine()) != null) {
+                if (line.contains("HOST: ")) {
+                    host = line.replaceFirst("HOST: ", "").trim();
+                } else if (line.contains("USER: ")) {
+                    user = line.replaceFirst("USER: ", "").trim();
+                } else if (line.contains("PASS: ")) {
+                    pass = line.replaceFirst("PASS: ", "").trim();
+                } else if (line.contains("VIRT: ")) {
+                    virt = line.replaceFirst("VIRT: ", "").trim();
+                }
+            }
+        
+        } finally {
+            br.close();
+        }
+
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost");
-        //factory.setUsername(""); // guest (default)
-        //factory.setPassword(""); // guest (default)
-        //factory.setVirtualHost(""); // "/" (default)
+        factory.setHost(host);
+        factory.setUsername(user); // guest (default)
+        factory.setPassword(pass); // guest (default)
+        factory.setVirtualHost(virt); // "/" (default)
 
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
