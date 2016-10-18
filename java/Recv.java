@@ -45,14 +45,37 @@ public class Recv {
         channel.queueDeclare(QUEUE_NAME, false, false, false, null);
         System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 
+        channel.basicQos(1); // This tells RabbitMQ not to give more than one message to a consumer at a time.
+
         Consumer consumer = new DefaultConsumer(channel) {
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
                 String message = new String(body, "UTF-8");
                 System.out.println(" [x] Received '" + message + "'");
+
+                try {
+                    do_work(message);
+                } finally {
+                    System.out.println(" [x] The work is done!");
+                    channel.basicAck(envelope.getDeliveryTag(), false);
+                }
             }
         };
 
-        channel.basicConsume(QUEUE_NAME, true, consumer);
+        channel.basicConsume(QUEUE_NAME, 
+                            false, // disabling the automatic acknowledgement. 
+                            consumer);
+    }
+
+    private static void doWork(String task) {
+        for (char ch : task.toCharArray()) {
+            if (ch == '.') {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException _ignored) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
     }
 }

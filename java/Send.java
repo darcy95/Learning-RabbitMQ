@@ -35,15 +35,25 @@ public class Send {
 
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(host);
-        factory.setUsername(user); // guest (default)
-        factory.setPassword(pass); // guest (default)
-        factory.setVirtualHost(virt); // "/" (default)
+        factory.setUsername(user);      // guest (default)
+        factory.setPassword(pass);      // guest (default)
+        factory.setVirtualHost(virt);   // "/" (default)
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 
-        channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+        channel.queueDeclare(QUEUE_NAME, // The name of the queue
+                            true,  // Message durability: if this is set to true, a message won't be deleted until the delivery is acked by a consumer
+                            false, 
+                            false, 
+                            null);
+
         String message = "Hello World!";
-        channel.basicPublish("", QUEUE_NAME, null, message.getBytes("UTF-8"));
+
+        channel.basicPublish("", 
+                            QUEUE_NAME, // The name of the queue
+                            MessageProperties.PERSISTENT_TEXT_PLAIN, // marking this message persistent (since Message durability is set above). Otherwise, null.
+                            message.getBytes("UTF-8"));
+
         System.out.println(" [x] Sent '" + message + "'");
 
         channel.close();
