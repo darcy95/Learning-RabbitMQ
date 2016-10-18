@@ -10,6 +10,7 @@ public class Send {
         factory.setHost("localhost");
         //factory.setUsername(""); // guest (default)
         //factory.setPassword(""); // guest (default)
+        //factory.setVirtualHost(""); // "/" (default)
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 

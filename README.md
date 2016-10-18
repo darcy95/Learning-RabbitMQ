@@ -5,12 +5,12 @@ Server environment:
 
 Installation:
 - sudo apt-get install rabbitmq-server
-- sudo rabbitmq-plugins rammitmq_management
+- sudo rabbitmq-plugins enable rabbitmq_management
 - sudo service rabbutmq-server restart
 
 Creating users:
-- sudo rabbitmqctl add_user <username> <password>
-- sudo rabbitmqctl set_user_tags <username> <administrator|monitoring|policymaker|management>
+- sudo rabbitmqctl add_user *username* *password*
+- sudo rabbitmqctl set_user_tags *username* *administrator|monitoring|policymaker|management*
 
 Web management:
 - http://localhost:15672

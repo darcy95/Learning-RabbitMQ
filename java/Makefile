@@ -15,6 +15,20 @@ hello:
 	@java -cp ${JAVA_CP} Send
 	@java -cp ${JAVA_CP} Send
 	@java -cp ${JAVA_CP} Send
+	@java -cp ${JAVA_CP} Send
+	@java -cp ${JAVA_CP} Send
+	@java -cp ${JAVA_CP} Send
+	@java -cp ${JAVA_CP} Send
+	@java -cp ${JAVA_CP} Send
+	@java -cp ${JAVA_CP} Send
+	@java -cp ${JAVA_CP} Send
+	@java -cp ${JAVA_CP} Send
+	@java -cp ${JAVA_CP} Send
+	@java -cp ${JAVA_CP} Send
+	@java -cp ${JAVA_CP} Send
+	@java -cp ${JAVA_CP} Send
+	@java -cp ${JAVA_CP} Send
+	@java -cp ${JAVA_CP} Send
 	@java -cp ${JAVA_CP} Recv
 
 clean:
