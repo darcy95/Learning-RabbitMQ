@@ -27,5 +27,23 @@ hello-recv: Recv.class
 Recv.class:
 	javac -cp ./classes/rabbitmq-client.jar Recv.java
 
+fanout-send: EmitLog.class
+	@java -cp ${JAVA_CP} EmitLog 1.Hello
+	@java -cp ${JAVA_CP} EmitLog 2.World
+	@java -cp ${JAVA_CP} EmitLog 3.Rabbit
+	@java -cp ${JAVA_CP} EmitLog 4.Message
+	@java -cp ${JAVA_CP} EmitLog 5.Welcome
+	@java -cp ${JAVA_CP} EmitLog 6.to
+	@java -cp ${JAVA_CP} EmitLog 7.Matrix
+
+EmitLog.class:
+	javac -cp ./classes/rabbitmq-client.jar EmitLog.java
+
+fanout-recv: RecvLog.class
+	@java -cp ${JAVA_CP} RecvLog
+
+RecvLog.class:
+	javac -cp ./classes/rabbitmq-client.jar RecvLog.java
+
 clean:
 	rm -rf *.class
