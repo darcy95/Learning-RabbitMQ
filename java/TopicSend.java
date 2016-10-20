@@ -1,8 +1,8 @@
 import java.io.*;
 import com.rabbitmq.client.*;
 
-public class DirectRecv {
-    private static final String EXCHANGE_NAME = "direct_logs";
+public class TopicSend {
+    private static final String EXCHANGE_NAME = "topic_logs";
 
     public static void main(String[] argv) throws Exception {
         BufferedReader br = new BufferedReader(new FileReader("../conn.db"));
@@ -38,35 +38,19 @@ public class DirectRecv {
 
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
-
         channel.exchangeDeclare(EXCHANGE_NAME, 
-                                "direct"); // The type of an exchange
+                                "topic"); // This is a type of an exchange. E.g., fanout, direct, topic ...
+        String routingKey = argv[0];
+        String message = argv[1];
 
-        String queueName = channel.queueDeclare().getQueue();
+        channel.basicPublish(EXCHANGE_NAME, 
+                            routingKey, // So, here routing keys will be a wild-carded pattern rather than a single keyword used in 'direct' usecase
+                            null,
+                            message.getBytes("UTF-8"));
 
-        if (argv.length < 1) {
-            System.err.println("Usage: DirectRecv [info] [warning] [error]");
-            System.exit(1);
-        }
+        System.out.println(" [x] Sent '" + routingKey + ": " + message + "'");
 
-        for (String severity : argv) {
-            channel.queueBind(queueName,    // 
-                            EXCHANGE_NAME,  // 
-                            severity);      // the name of key (info, warning, error)
-        }
-
-        System.out.println(" [*] Waiting for messages. To Exit press CONTROL+C");
-
-        Consumer consumer = new DefaultConsumer(channel) {
-            @Override
-            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-                String message = new String(body, "UTF-8");
-                System.out.println(" [x] Received '" + envelope.getRoutingKey() + ": " + message + "'");
-            }
-        };
-
-        channel.basicConsume(queueName, 
-                            true, // Automatic acknowledgement
-                            consumer);
+        channel.close();
+        connection.close();
     }
 }

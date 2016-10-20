@@ -64,6 +64,24 @@ direct-recv-2: DirectRecv.class
 DirectRecv.class:
 	javac -cp ./classes/rabbitmq-client.jar DirectRecv.java
 
+topic-send: TopicSend.class
+	@java -cp ${JAVA_CP} TopicSend "kern.critical" "A critical kernel error"
+	@java -cp ${JAVA_CP} TopicSend "kitchen.critical" "A critical kitchen error"
+	@java -cp ${JAVA_CP} TopicSend "livingroom.critical" "A critical living room error"
+	@java -cp ${JAVA_CP} TopicSend "kern.boring" "A boring kernel error"
+	@java -cp ${JAVA_CP} TopicSend "kern.typical" "A typical kernel error"
+
+TopicSend.class:
+	javac -cp ./classes/rabbitmq-client.jar TopicSend.java
+
+topic-recv-1: TopicRecv.class
+	@java -cp ${JAVA_CP} TopicRecv "kern.*"
+
+topic-recv-2: TopicRecv.class
+	@java -cp ${JAVA_CP} TopicRecv "kern.*" "*.critical"
+
+TopicRecv.class:
+	javac -cp ./classes/rabbitmq-client.jar TopicRecv.java
 
 clean:
 	rm -rf *.class
