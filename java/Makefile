@@ -27,23 +27,43 @@ hello-recv: Recv.class
 Recv.class:
 	javac -cp ./classes/rabbitmq-client.jar Recv.java
 
-fanout-send: EmitLog.class
-	@java -cp ${JAVA_CP} EmitLog 1.Hello
-	@java -cp ${JAVA_CP} EmitLog 2.World
-	@java -cp ${JAVA_CP} EmitLog 3.Rabbit
-	@java -cp ${JAVA_CP} EmitLog 4.Message
-	@java -cp ${JAVA_CP} EmitLog 5.Welcome
-	@java -cp ${JAVA_CP} EmitLog 6.to
-	@java -cp ${JAVA_CP} EmitLog 7.Matrix
+fanout-send: FanoutSend.class
+	@java -cp ${JAVA_CP} FanoutSend 1.Hello
+	@java -cp ${JAVA_CP} FanoutSend 2.World
+	@java -cp ${JAVA_CP} FanoutSend 3.Rabbit
+	@java -cp ${JAVA_CP} FanoutSend 4.Message
+	@java -cp ${JAVA_CP} FanoutSend 5.Welcome
+	@java -cp ${JAVA_CP} FanoutSend 6.to
+	@java -cp ${JAVA_CP} FanoutSend 7.Matrix
 
-EmitLog.class:
-	javac -cp ./classes/rabbitmq-client.jar EmitLog.java
+FanoutSend.class:
+	javac -cp ./classes/rabbitmq-client.jar FanoutSend.java
 
 fanout-recv: RecvLog.class
-	@java -cp ${JAVA_CP} RecvLog
+	@java -cp ${JAVA_CP} FanoutRecv
 
-RecvLog.class:
-	javac -cp ./classes/rabbitmq-client.jar RecvLog.java
+FanoutRecv.class:
+	javac -cp ./classes/rabbitmq-client.jar FanoutRecv.java
+
+direct-send: DirectSend.class
+	@java -cp ${JAVA_CP} DirectSend warning "Fire in the hole!"
+	@java -cp ${JAVA_CP} DirectSend error "Run! Run! It will explode!"
+	@java -cp ${JAVA_CP} DirectSend info "All ants are exterminated."
+	@java -cp ${JAVA_CP} DirectSend warning "Oh, no! A giant zombie ant is attcking us."
+	@java -cp ${JAVA_CP} DirectSend error "The commander is dead! The commander is dead! We are so doomed!!!"
+
+DirectSend.class:
+	javac -cp ./classes/rabbitmq-client.jar DirectSend.java
+
+direct-recv-1: DirectRecv.class
+	@java -cp ${JAVA_CP} DirectRecv error warning
+	
+direct-recv-2: DirectRecv.class
+	@java -cp ${JAVA_CP} DirectRecv info warning
+
+DirectRecv.class:
+	javac -cp ./classes/rabbitmq-client.jar DirectRecv.java
+
 
 clean:
 	rm -rf *.class
