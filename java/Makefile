@@ -83,5 +83,17 @@ topic-recv-2: TopicRecv.class
 TopicRecv.class:
 	javac -cp ./classes/rabbitmq-client.jar TopicRecv.java
 
+rpc-server: RPCServer.class
+	@java -cp ${JAVA_CP} RPCServer
+
+RPCServer.class:
+	javac -cp ${JAVA_CP} RPCServer.java
+
+rpc-client: RPCClient.class
+	@java -cp ${JAVA_CP} RPCClient
+
+RPCClient.class:
+	javac -cp ${JAVA_CP} RPCClient.java
+
 clean:
 	rm -rf *.class
